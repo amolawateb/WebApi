@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/15/2021 21:27:08
+-- Date Created: 01/16/2021 15:49:01
 -- Generated from EDMX file: C:\Users\a.awate\source\repos\WebApi\WebApiDemo\EmployeeDataAccess\EmployeeDataModel.edmx
 -- --------------------------------------------------
 
@@ -35,7 +35,8 @@ CREATE TABLE [dbo].[Employees] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Email] nvarchar(max)  NOT NULL,
-    [Department] int  NOT NULL
+    [Department] int  NOT NULL,
+    [Gender] nchar(10)  NULL
 );
 GO
 

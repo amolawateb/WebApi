@@ -5,8 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using WebApiContrib.Formatting.Jsonp;
 
 namespace WebApiDemo
 {
@@ -41,6 +43,14 @@ namespace WebApiDemo
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
 
+            ////for cross domain web api access
+            //var jsonPFormatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
+            //config.Formatters.Insert(0, jsonPFormatter);
+
+            ////for cross domain web api access
+            config.EnableCors();
+            //config.Filters.Add(new RequireHttpsAttribute());
+            
             //config.Formatters.Add(new CustomJsonFormatter());
 
             //Remove XML format to return repsons as Json

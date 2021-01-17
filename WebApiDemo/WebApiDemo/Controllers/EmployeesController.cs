@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EmployeeDataAccess;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
-using EmployeeDataAccess;
+using System.Web.Http.Cors;
 
 namespace WebApiDemo.Controllers
 {
+    [EnableCorsAttribute("*", "*", "*")]
     public class EmployeesController : ApiController
     {
+        EmployeeDBEntities entities = new EmployeeDBEntities();
+
+        [BasicAuthentication]
         public HttpResponseMessage GetEmployees(string gender = "All")
         {
-            EmployeeDBEntities entities = new EmployeeDBEntities();
-            switch (gender.ToLower())
+            string username = Thread.CurrentPrincipal.Identity.Name;
+            switch (username.ToLower())
             {
-                case "all":
-                    return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.ToList());
                 case "male":
                     return Request.CreateResponse(HttpStatusCode.OK, 
                         entities.Employees.Where(e=>e.Gender.ToLower() == "male").ToList());
@@ -24,7 +27,7 @@ namespace WebApiDemo.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK,
                         entities.Employees.Where(e => e.Gender.ToLower() == "female").ToList());
                 default:
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Values for Gender must be Male or Female");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 
@@ -33,7 +36,6 @@ namespace WebApiDemo.Controllers
         {
             try
             {
-                EmployeeDBEntities entities = new EmployeeDBEntities();
                 var entity = entities.Employees.FirstOrDefault(e => e.Id == id);
 
                 if (entity != null)
@@ -56,7 +58,6 @@ namespace WebApiDemo.Controllers
         {
             try
             {
-                EmployeeDBEntities entities = new EmployeeDBEntities();
                 entities.Employees.Add(emp);
                 entities.SaveChanges();
 
@@ -76,7 +77,6 @@ namespace WebApiDemo.Controllers
         {
             try
             {
-                EmployeeDBEntities entities = new EmployeeDBEntities();
                 var entity = entities.Employees.FirstOrDefault(e => e.Id == id);
 
                 if (entity != null)
@@ -103,7 +103,6 @@ namespace WebApiDemo.Controllers
         {
             try
             {
-                EmployeeDBEntities entities = new EmployeeDBEntities();
                 var entity = entities.Employees.FirstOrDefault(e => e.Id == id);
 
                 if (entity != null)
